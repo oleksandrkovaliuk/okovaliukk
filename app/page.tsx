@@ -34,7 +34,7 @@ export default function Page() {
       </div>
 
       <p className="text-muted-foreground mb-12 text-sm sm:mb-20">
-        Be curious. Read widely. Try new things
+        Be curious. Read widely. Try new things.
       </p>
 
       <section className="mb-12 sm:mb-20" id="about">
@@ -64,7 +64,7 @@ export default function Page() {
           right.
         </p>
         <p className="mb-2">
-          Since high school, i have spent years building software, learning and
+          Since high school, I have spent years building software, learning and
           growing. You can get more details about my background through{" "}
           <Button
             size="auto"

@@ -25,18 +25,18 @@ export const workExperience = [
         <p>
           Furthermore, we restructured the API layer around TanStack Query key
           factories and query options, migrated from Axios to Ky to fully rely
-          on browser netive fetch rather then XMLHttpRequest wrapper, made the
+          on native fetch rather than the XMLHttpRequest wrapper, made the
           socket layer type-safe from the UI perspective, aligned the codebase
-          with stricter TypeScript and linting rules, establish a proper design
+          with stricter TypeScript and linting rules, established a proper design
           system using Base UI, Tailwind v4, and primitives component
           composition via shadcn registry.
         </p>
 
         <p>
           The result was a faster, more maintainable product: cut CI/CD times in
-          half, reduced bundle size , improved sprint delivery by roughly 30/40%
-          (based on past sprint comparisons), enchance INP perfomance across
-          content heavy pages. We also improved observability and AI-assisted
+          half, reduced bundle size, improved sprint delivery by roughly 30–40%
+          (based on past sprint comparisons), and improved INP performance across
+          content-heavy pages. We also improved observability and AI-assisted
           workflows by setting up richer Sentry config and automating parts of
           the release process.
         </p>
@@ -93,7 +93,7 @@ export const workExperience = [
         </p>
 
         <p>
-          The main responsibility of mine was the AI chat interface. We used the
+          My main responsibility was the AI chat interface. We used the
           Vercel AI SDK with Server-Sent Events to get smooth, persistent
           streaming, and mem0 to keep track of the conversation context.
           Building out the tool calls was the coolest part - basically writing
@@ -136,7 +136,7 @@ export const workExperience = [
         </p>
 
         <p>
-          I primarily worked with React and its surrounding ecosystems. Bouncing
+          I primarily worked with React and its surrounding ecosystem. Bouncing
           between projects helped me establish my core HTML, CSS, and JavaScript
           fundamentals while mastering advanced React patterns. It allowed me to
           see firsthand which architectural decisions actually succeed in
