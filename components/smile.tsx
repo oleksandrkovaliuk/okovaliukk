@@ -74,6 +74,9 @@ export function Smile({
       return nextMood;
     });
 
+    setAcknowledged(true);
+    document.cookie = "acknowledged=true; path=/; max-age=604800";
+
     if (isTouchScreen) {
       await requestOrientationPermission();
     }
