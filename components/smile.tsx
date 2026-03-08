@@ -25,6 +25,7 @@ type EyeTransform = {
 };
 
 export function Smile(props: React.ComponentProps<"svg">) {
+  const abortControllerRef = React.useRef<AbortController | null>(null);
   const smileContainerRef = React.useRef<HTMLButtonElement>(null);
 
   const [mood, setMood] = React.useState<Mood>("default");
@@ -37,17 +38,39 @@ export function Smile(props: React.ComponentProps<"svg">) {
   const isTouchScreen =
     typeof window !== "undefined" && "ontouchstart" in window;
 
-  function moodChange() {
+  async function requestOrientationPermission() {
+    return (
+      DeviceOrientationEvent as unknown as {
+        requestPermission: () => Promise<string>;
+      }
+    )
+      .requestPermission()
+      .then((state) => {
+        if (state !== "granted") {
+          abortControllerRef.current?.abort();
+        }
+      })
+      .catch(() => {
+        abortControllerRef.current?.abort();
+      });
+  }
+
+  async function moodChange() {
     setMood((prev) => {
       const filteredMoods = moods.findIndex((m) => m === prev);
       const nextMood = moods[(filteredMoods + 1) % moods.length];
 
       return nextMood;
     });
+
+    if (isTouchScreen) {
+      await requestOrientationPermission();
+    }
   }
 
   React.useEffect(() => {
     const abortController = new AbortController();
+    abortControllerRef.current = abortController;
 
     function onMouseMove(event: MouseEvent) {
       const smileContainer = smileContainerRef.current;
@@ -73,7 +96,7 @@ export function Smile(props: React.ComponentProps<"svg">) {
       if (gamma == null || beta == null) return;
 
       const x = (gamma / 90) * 2 * 0.5;
-      const y = ((beta - 90) / 90) * 2;
+      const y = (beta / 180) * 0.6;
 
       const boundedX = Math.max(-0.5, Math.min(0.5, x));
       const boundedY = Math.max(-0.5, Math.min(0.7, y));
@@ -84,44 +107,15 @@ export function Smile(props: React.ComponentProps<"svg">) {
     }
 
     if (isTouchScreen) {
-      window.addEventListener("deviceorientation", onDeviceOrientationChange, {
+      document.addEventListener("mousemove", onMouseMove, {
         passive: true,
         signal: abortController.signal,
       });
 
-      if (
-        typeof (
-          DeviceOrientationEvent as unknown as {
-            requestPermission?: () => Promise<string>;
-          }
-        ).requestPermission === "function"
-      ) {
-        const btn = smileContainerRef.current;
-        if (btn) {
-          const requestOnClick = () => {
-            (
-              DeviceOrientationEvent as unknown as {
-                requestPermission: () => Promise<string>;
-              }
-            )
-              .requestPermission()
-              .then((state) => {
-                if (state !== "granted") {
-                  window.removeEventListener(
-                    "deviceorientation",
-                    onDeviceOrientationChange
-                  );
-                }
-              });
-            btn.removeEventListener("click", requestOnClick);
-          };
-          btn.addEventListener("click", requestOnClick, { once: true });
-        }
-      }
       return;
     }
 
-    document.addEventListener("mousemove", onMouseMove, {
+    window.addEventListener("deviceorientation", onDeviceOrientationChange, {
       passive: true,
       signal: abortController.signal,
     });
@@ -142,7 +136,7 @@ export function Smile(props: React.ComponentProps<"svg">) {
           return;
         }
 
-        moodChange();
+        return moodChange();
       }}
       style={
         {
