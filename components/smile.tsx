@@ -68,11 +68,11 @@ export function Smile(props: React.ComponentProps<"svg">) {
     }
 
     function onDeviceOrientationChange(event: DeviceOrientationEvent) {
-      const { alpha, beta } = event;
+      const { gamma, beta } = event;
 
-      if (alpha == null || beta == null) return;
+      if (gamma == null || beta == null) return;
 
-      const x = (alpha / 360 - 0.5) * 2 * 0.5;
+      const x = (gamma / 90) * 2 * 0.5;
       const y = (beta / 180) * 0.6;
 
       const boundedX = Math.max(-0.5, Math.min(0.5, x));
@@ -83,17 +83,20 @@ export function Smile(props: React.ComponentProps<"svg">) {
       });
     }
 
-    document.addEventListener("mousemove", onMouseMove, {
-      passive: true,
-      signal: abortController.signal,
-    });
+    if (!isTouchScreen) {
+      document.addEventListener("mousemove", onMouseMove, {
+        passive: true,
+        signal: abortController.signal,
+      });
+    }
+
     window.addEventListener("deviceorientation", onDeviceOrientationChange, {
       passive: true,
       signal: abortController.signal,
     });
 
     return () => abortController.abort();
-  }, [mood]);
+  }, [isTouchScreen]);
 
   return (
     <Button
@@ -104,7 +107,7 @@ export function Smile(props: React.ComponentProps<"svg">) {
       ref={smileContainerRef}
       className="size-11 [contain:strict]"
       onMouseEnter={() => {
-        if (!isTouchScreen) {
+        if (isTouchScreen) {
           return;
         }
 
