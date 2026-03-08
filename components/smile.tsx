@@ -75,8 +75,8 @@ export function Smile(props: React.ComponentProps<"svg">) {
       const x = (gamma / 90) * 2 * 0.5;
       const y = ((beta - 90) / 90) * 2;
 
-      const boundedX = Math.max(-2, Math.min(2, x * 2));
-      const boundedY = Math.max(-2, Math.min(2 * 1.4, y * 2));
+      const boundedX = Math.max(-0.5, Math.min(0.5, x));
+      const boundedY = Math.max(-0.5, Math.min(0.7, y));
 
       React.startTransition(() => {
         setEyeTransform({ x: boundedX, y: boundedY });
