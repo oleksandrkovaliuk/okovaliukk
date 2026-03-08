@@ -25,8 +25,44 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Oleksandr Kovaliuk",
+  metadataBase: "https://okovaliukk.dev",
+  title: {
+    default: "Oleksandr Kovaliuk",
+    template: "%s | Oleksandr Kovaliuk",
+  },
   description: "Senior Frontend Engineer",
+  keywords: ["frontend", "engineer", "React", "Next.js"],
+  authors: [{ name: "Oleksandr Kovaliuk", url: "https://okovaliukk.dev" }],
+  creator: "Oleksandr Kovaliuk",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://okovaliukk.dev",
+    siteName: "Oleksandr Kovaliuk",
+    title: "Oleksandr Kovaliuk",
+    description: "Senior Frontend Engineer",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Oleksandr Kovaliuk - Senior Frontend Engineer",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Oleksandr Kovaliuk",
+    description: "Senior Frontend Engineer",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default async function RootLayout({
