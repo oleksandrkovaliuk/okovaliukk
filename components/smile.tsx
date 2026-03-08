@@ -135,11 +135,7 @@ export function Smile({
       size="auto"
       variant="clean"
       data-slot="smile"
-      onClick={() => {
-        moodChange();
-        setAcknowledged(true);
-        document.cookie = "acknowledged=true; path=/; max-age=604800";
-      }}
+      onClick={moodChange}
       ref={smileContainerRef}
       className="relative size-11"
       onMouseEnter={() => {
