@@ -24,9 +24,16 @@ type EyeTransform = {
   y: number;
 };
 
+// Lower alpha = smoother but more lag. Tune between 0.08–0.2
+const ORIENTATION_ALPHA = 0.12;
+// Skip frames where gamma jumps more than this (discontinuity guard)
+const GAMMA_JUMP_THRESHOLD = 55;
+
 export function Smile(props: React.ComponentProps<"svg">) {
   const abortControllerRef = React.useRef<AbortController | null>(null);
   const smileContainerRef = React.useRef<HTMLButtonElement>(null);
+  const smoothedOrientationRef = React.useRef({ x: 0, y: 0 });
+  const prevGammaRef = React.useRef<number | null>(null);
 
   const [mood, setMood] = React.useState<Mood>("default");
 
@@ -92,14 +99,39 @@ export function Smile(props: React.ComponentProps<"svg">) {
 
     function onDeviceOrientationChange(event: DeviceOrientationEvent) {
       const { gamma, beta } = event;
-
       if (gamma == null || beta == null) return;
 
-      const x = (gamma / 90) * 2 * 0.5;
-      const y = (beta / 180) * 0.6;
+      // Guard: skip frames with large gamma discontinuity (wrap/flip artifact)
+      const prevGamma = prevGammaRef.current;
+      if (
+        prevGamma !== null &&
+        Math.abs(gamma - prevGamma) > GAMMA_JUMP_THRESHOLD
+      ) {
+        prevGammaRef.current = gamma;
+        return;
+      }
+      prevGammaRef.current = gamma;
 
-      const boundedX = Math.max(-0.5, Math.min(0.5, x));
-      const boundedY = Math.max(-0.5, Math.min(0.7, y));
+      // gamma: -90..90 → x: -0.5..0.5
+      const rawX = (gamma / 90) * 0.5;
+
+      // Center Y around ~90° (normal upright hold).
+      // Putting phone down → beta drops toward 0 → rawY goes negative (up).
+      // Scale kept modest so movement stays subtle.
+      const rawY = ((beta - 90) / 90) * 0.35;
+
+      // Exponential smoothing
+      const sx =
+        ORIENTATION_ALPHA * rawX +
+        (1 - ORIENTATION_ALPHA) * smoothedOrientationRef.current.x;
+      const sy =
+        ORIENTATION_ALPHA * rawY +
+        (1 - ORIENTATION_ALPHA) * smoothedOrientationRef.current.y;
+      smoothedOrientationRef.current = { x: sx, y: sy };
+
+      // Tight upward clamp (-0.15) prevents eyes going past brow
+      const boundedX = Math.max(-0.5, Math.min(0.5, sx));
+      const boundedY = Math.max(-0.15, Math.min(0.45, sy));
 
       React.startTransition(() => {
         setEyeTransform({ x: boundedX, y: boundedY });
