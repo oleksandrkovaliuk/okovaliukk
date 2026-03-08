@@ -101,7 +101,7 @@ export default async function RootLayout({
                   <Link
                     target="_blank"
                     className="font-medium"
-                    href="https://docs.google.com/document/d/1lSxGmmAbTFf0WhDlkPbs-R42bwhjz9WC0cXrivOu2u4/edit?tab=t.0"
+                    href="https://docs.google.com/document/d/16Y9rpyhHnK78Abioa9FBQzfh4kiG697ki0gusEVHgv4/edit?usp=sharing"
                   >
                     <span className="sr-only">View my resume</span>
 
