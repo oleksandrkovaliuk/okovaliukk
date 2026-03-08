@@ -132,6 +132,7 @@
     transform-box: fill-box;
     animation: blink 5s infinite;
     animation-delay: 2s;
+    animation-fill-mode: backwards;
   }
 
   @keyframes blink {

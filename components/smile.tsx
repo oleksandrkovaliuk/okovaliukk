@@ -92,12 +92,44 @@ export function Smile(props: React.ComponentProps<"svg">) {
         passive: true,
         signal: abortController.signal,
       });
+
+      return;
     }
 
     window.addEventListener("deviceorientation", onDeviceOrientationChange, {
       passive: true,
       signal: abortController.signal,
     });
+
+    if (
+      typeof (
+        DeviceOrientationEvent as unknown as {
+          requestPermission?: () => Promise<string>;
+        }
+      ).requestPermission === "function"
+    ) {
+      const btn = smileContainerRef.current;
+      if (btn) {
+        const requestOnClick = () => {
+          (
+            DeviceOrientationEvent as unknown as {
+              requestPermission: () => Promise<string>;
+            }
+          )
+            .requestPermission()
+            .then((state) => {
+              if (state !== "granted") {
+                window.removeEventListener(
+                  "deviceorientation",
+                  onDeviceOrientationChange
+                );
+              }
+            });
+          btn.removeEventListener("click", requestOnClick);
+        };
+        btn.addEventListener("click", requestOnClick, { once: true });
+      }
+    }
 
     return () => abortController.abort();
   }, [isTouchScreen]);
