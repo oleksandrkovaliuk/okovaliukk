@@ -129,7 +129,7 @@
   [data-slot="smile"] [data-slot="eye"] {
     transform: var(--eye-transform);
     transform-origin: center;
-    transition: transform 0.15s linear;
+    transition: transform 0.1s linear;
     transform-box: fill-box;
     animation: blink 5s infinite linear;
     animation-delay: 2s;

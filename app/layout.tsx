@@ -5,12 +5,15 @@ import "./globals.css";
 
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Copyright } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
 import { Document } from "~/components/icons/document";
+import { Sitemap } from "~/components/icons/sitemap";
 import { Smile } from "~/components/smile";
 import { Button } from "~/components/ui/button";
+import { Separator } from "~/components/ui/separator";
 
 const nunitoSans = Nunito_Sans({ variable: "--font-sans" });
 
@@ -24,8 +27,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const baseUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000";
+
 export const metadata: Metadata = {
-  metadataBase: "https://okovaliukk.dev",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || baseUrl),
   title: {
     default: "Oleksandr Kovaliuk",
     template: "%s | Oleksandr Kovaliuk",
@@ -43,7 +50,7 @@ export const metadata: Metadata = {
     description: "Senior Frontend Engineer",
     images: [
       {
-        url: "/og-image.png",
+        url: "/opengraph-image.png",
         width: 1200,
         height: 630,
         alt: "Oleksandr Kovaliuk - Senior Frontend Engineer",
@@ -54,7 +61,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Oleksandr Kovaliuk",
     description: "Senior Frontend Engineer",
-    images: ["/og-image.png"],
+    images: ["/opengraph-image.png"],
   },
   robots: {
     index: true,
@@ -106,6 +113,49 @@ export default async function RootLayout({
             <Analytics />
             <SpeedInsights />
             {children}
+
+            <footer>
+              <Button
+                size="auto"
+                variant="link"
+                nativeButton={false}
+                className="text-md"
+                render={
+                  <Link
+                    href="mailto:okovaliukk@proton.me"
+                    aria-label="Email me"
+                    target="_blank"
+                  >
+                    okovaliukk@proton.me
+                  </Link>
+                }
+              />
+
+              <Separator className="mt-1 mb-2" />
+
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground inline-flex items-center gap-1 text-sm">
+                  <Copyright className="size-3" />
+                  {new Date().getFullYear()} Oleksandr Kovaliuk
+                </span>
+
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  nativeButton={false}
+                  render={
+                    <Link
+                      href="/sitemap.xml"
+                      aria-label="Sitemap"
+                      target="_blank"
+                    >
+                      <span className="sr-only">Sitemap</span>
+                      <Sitemap className="size-3" />
+                    </Link>
+                  }
+                />
+              </div>
+            </footer>
           </div>
         </main>
       </body>
