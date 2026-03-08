@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import * as React from "react";
 
 import { AngrySmile } from "./icons/angry-smile";
+import { Click } from "./icons/click";
 import { DefaultSmile } from "./icons/default-smile";
 import { HappySmile } from "./icons/happy-smile";
 import { QuestioningSmile } from "./icons/questioning-smile";
@@ -24,17 +25,20 @@ type EyeTransform = {
   y: number;
 };
 
-export function Smile(props: React.ComponentProps<"svg">) {
+export function Smile({
+  defaultAcknowledged = false,
+  ...props
+}: React.ComponentProps<"svg"> & { defaultAcknowledged?: boolean }) {
   const abortControllerRef = React.useRef<AbortController | null>(null);
   const smileContainerRef = React.useRef<HTMLButtonElement>(null);
 
   const [mood, setMood] = React.useState<Mood>("default");
+  const [ackowledged, setAcknowledged] = React.useState(defaultAcknowledged);
 
   const [eyeTransform, setEyeTransform] = React.useState<EyeTransform>({
     x: 0,
     y: 0,
   });
-  const [debug, setDebug] = React.useState<string>("");
 
   const isTouchScreen =
     typeof window !== "undefined" && "ontouchstart" in window;
@@ -45,7 +49,7 @@ export function Smile(props: React.ComponentProps<"svg">) {
         requestPermission: () => Promise<string>;
       }
     )
-      .requestPermission()
+      ?.requestPermission()
       .then((state) => {
         if (state !== "granted") {
           abortControllerRef.current?.abort();
@@ -63,6 +67,9 @@ export function Smile(props: React.ComponentProps<"svg">) {
 
       return nextMood;
     });
+
+    setAcknowledged(true);
+    document.cookie = "acknowledged=true; path=/; max-age=604800";
 
     if (isTouchScreen) {
       await requestOrientationPermission();
@@ -105,8 +112,6 @@ export function Smile(props: React.ComponentProps<"svg">) {
       React.startTransition(() => {
         setEyeTransform({ x: boundedX, y: boundedY });
       });
-
-      setDebug(`x: ${x}, y: ${y}`);
     }
 
     document.addEventListener("mousemove", onMouseMove, {
@@ -123,106 +128,112 @@ export function Smile(props: React.ComponentProps<"svg">) {
   }, [isTouchScreen]);
 
   return (
-    <React.Fragment>
-      <span>{debug}</span>
-      <Button
-        size="auto"
-        variant="clean"
-        data-slot="smile"
-        onClick={moodChange}
-        ref={smileContainerRef}
-        className="size-11 [contain:strict]"
-        onMouseEnter={() => {
-          if (isTouchScreen) {
-            return;
-          }
-
-          return moodChange();
-        }}
-        style={
-          {
-            "--eye-transform": `translate(${eyeTransform.x}px, ${eyeTransform.y}px)`,
-          } as React.CSSProperties
+    <Button
+      size="auto"
+      variant="clean"
+      data-slot="smile"
+      onClick={moodChange}
+      ref={smileContainerRef}
+      className="relative size-11"
+      onMouseEnter={() => {
+        if (isTouchScreen) {
+          return;
         }
-      >
-        <span className="sr-only">{mood} smile, navigate to the home page</span>
-        <AnimatePresence mode="wait">
-          {mood === "default" && (
-            <motion.span
-              key={mood}
-              {...{
-                initial: { scale: 0.95 },
-                exit: { scale: 0.95 },
-                animate: { scale: 1 },
-                transition: { duration: 0.1, ease: "easeOut" },
-              }}
-              className="inline-flex"
-            >
-              <DefaultSmile {...props} />
-            </motion.span>
-          )}
 
-          {mood === "happy" && (
-            <motion.span
-              key={mood}
-              {...{
-                initial: { scale: 0.95 },
-                exit: { scale: 0.95 },
-                animate: { scale: 1 },
-                transition: { duration: 0.1, ease: "easeOut" },
-              }}
-              className="inline-flex"
-            >
-              <HappySmile {...props} />
-            </motion.span>
-          )}
+        return moodChange();
+      }}
+      style={
+        {
+          "--eye-transform": `translate(${eyeTransform.x}px, ${eyeTransform.y}px)`,
+        } as React.CSSProperties
+      }
+    >
+      {!ackowledged ? (
+        <span
+          data-slot="click"
+          className="absolute -right-1.5 -bottom-1.5 transition-transform duration-100 group-active/button:scale-90"
+        >
+          <Click className="size-6" />
+        </span>
+      ) : null}
 
-          {mood === "angry" && (
-            <motion.span
-              key={mood}
-              {...{
-                initial: { scale: 0.95 },
-                exit: { scale: 0.95 },
-                animate: { scale: 1 },
-                transition: { duration: 0.1, ease: "easeOut" },
-              }}
-              className="inline-flex"
-            >
-              <AngrySmile {...props} />
-            </motion.span>
-          )}
+      <span className="sr-only">{mood} smile, navigate to the home page</span>
+      <AnimatePresence mode="wait">
+        {mood === "default" && (
+          <motion.span
+            key={mood}
+            {...{
+              initial: { scale: 0.95 },
+              exit: { scale: 0.95 },
+              animate: { scale: 1 },
+              transition: { duration: 0.1, ease: "easeOut" },
+            }}
+            className="inline-flex"
+          >
+            <DefaultSmile {...props} />
+          </motion.span>
+        )}
 
-          {mood === "surprised" && (
-            <motion.span
-              key={mood}
-              {...{
-                initial: { scale: 0.95 },
-                exit: { scale: 0.95 },
-                animate: { scale: 1 },
-                transition: { duration: 0.1, ease: "easeOut" },
-              }}
-              className="inline-flex"
-            >
-              <SuprisedSmile {...props} />
-            </motion.span>
-          )}
+        {mood === "happy" && (
+          <motion.span
+            key={mood}
+            {...{
+              initial: { scale: 0.95 },
+              exit: { scale: 0.95 },
+              animate: { scale: 1 },
+              transition: { duration: 0.1, ease: "easeOut" },
+            }}
+            className="inline-flex"
+          >
+            <HappySmile {...props} />
+          </motion.span>
+        )}
 
-          {mood === "questioning" && (
-            <motion.span
-              key={mood}
-              {...{
-                initial: { scale: 0.95 },
-                exit: { scale: 0.95 },
-                animate: { scale: 1 },
-                transition: { duration: 0.1, ease: "easeOut" },
-              }}
-              className="inline-flex"
-            >
-              <QuestioningSmile {...props} />
-            </motion.span>
-          )}
-        </AnimatePresence>
-      </Button>
-    </React.Fragment>
+        {mood === "angry" && (
+          <motion.span
+            key={mood}
+            {...{
+              initial: { scale: 0.95 },
+              exit: { scale: 0.95 },
+              animate: { scale: 1 },
+              transition: { duration: 0.1, ease: "easeOut" },
+            }}
+            className="inline-flex"
+          >
+            <AngrySmile {...props} />
+          </motion.span>
+        )}
+
+        {mood === "surprised" && (
+          <motion.span
+            key={mood}
+            {...{
+              initial: { scale: 0.95 },
+              exit: { scale: 0.95 },
+              animate: { scale: 1 },
+              transition: { duration: 0.1, ease: "easeOut" },
+            }}
+            className="inline-flex"
+          >
+            <SuprisedSmile {...props} />
+          </motion.span>
+        )}
+
+        {mood === "questioning" && (
+          <motion.span
+            key={mood}
+            {...{
+              initial: { scale: 0.95 },
+              exit: { scale: 0.95 },
+              animate: { scale: 1 },
+              transition: { duration: 0.1, ease: "easeOut" },
+            }}
+            className="inline-flex"
+          >
+            <QuestioningSmile {...props} />
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </Button>
   );
 }

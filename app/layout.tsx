@@ -5,6 +5,7 @@ import "./globals.css";
 
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { cookies } from "next/headers";
 import Link from "next/link";
 
 import { Document } from "~/components/icons/document";
@@ -28,11 +29,14 @@ export const metadata: Metadata = {
   description: "Senior Frontend Engineer",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jar = await cookies();
+  const acknowledged = jar.get("acknowledged")?.value === "true";
+
   return (
     <html lang="en" className={nunitoSans.variable}>
       <body
@@ -43,7 +47,7 @@ export default function RootLayout({
         <main className="after:from-background flex h-full flex-1 flex-col overflow-y-auto">
           <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-6 py-12 sm:py-24">
             <header className="mb-12 flex items-center justify-between">
-              <Smile className="size-10" />
+              <Smile defaultAcknowledged={acknowledged} className="size-10" />
 
               <Button
                 size="auto"
