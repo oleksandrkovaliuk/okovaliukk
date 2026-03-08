@@ -34,6 +34,8 @@ export function Smile(props: React.ComponentProps<"svg">) {
     y: 0,
   });
 
+  const [debug, setDebug] = React.useState<string>("");
+
   const isTouchScreen =
     typeof window !== "undefined" && "ontouchstart" in window;
 
@@ -73,14 +75,16 @@ export function Smile(props: React.ComponentProps<"svg">) {
       if (gamma == null || beta == null) return;
 
       const x = (gamma / 90) * 2 * 0.5;
-      const y = (beta / 180) * 0.6;
+      const y = ((beta - 90) / 90) * 2;
 
-      const boundedX = Math.max(-0.5, Math.min(0.5, x));
-      const boundedY = Math.max(-0.5, Math.min(0.7, y));
+      const boundedX = Math.max(-2, Math.min(2, x * 2));
+      const boundedY = Math.max(-2, Math.min(2 * 1.4, y * 2));
 
       React.startTransition(() => {
         setEyeTransform({ x: boundedX, y: boundedY });
       });
+
+      setDebug(`x: ${x}, y: ${y}`);
     }
 
     if (!isTouchScreen) {
@@ -119,6 +123,7 @@ export function Smile(props: React.ComponentProps<"svg">) {
         } as React.CSSProperties
       }
     >
+      <span>{debug}</span>
       <span className="sr-only">{mood} smile, navigate to the home page</span>
       <AnimatePresence mode="wait">
         {mood === "default" && (

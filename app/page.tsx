@@ -71,15 +71,11 @@ export default function Page() {
             variant="link"
             nativeButton={false}
             className="text-md"
-            render={<a href="#work-experience">work experience</a>}
-          />{" "}
-          or{" "}
-          <Button
-            size="auto"
-            variant="link"
-            nativeButton={false}
-            className="text-md"
-            render={<a href="#crafts">crafts</a>}
+            render={
+              <a href="#work-experience" aria-label="Work experience">
+                work experience
+              </a>
+            }
           />
           .
         </p>
@@ -89,7 +85,11 @@ export default function Page() {
           nativeButton={false}
           className="text-md"
           render={
-            <Link href="https://t.me/okovaliukk" target="_blank">
+            <Link
+              target="_blank"
+              href="https://t.me/okovaliukk"
+              aria-label="Message me on Telegram"
+            >
               message me on telegram
               <ArrowUpRight className="size-2 transition-transform duration-100 ease-linear group-hover/button:translate-x-0.25 group-hover/button:-translate-y-0.25" />
             </Link>
@@ -102,7 +102,11 @@ export default function Page() {
           nativeButton={false}
           className="text-md"
           render={
-            <Link href="https://x.com/okovaliukk" target="_blank">
+            <Link
+              target="_blank"
+              aria-label="Check out my X"
+              href="https://x.com/okovaliukk"
+            >
               check out my x
               <ArrowUpRight className="size-2 transition-transform duration-100 ease-linear group-hover/button:translate-x-0.25 group-hover/button:-translate-y-0.25" />
             </Link>
@@ -116,8 +120,9 @@ export default function Page() {
           className="text-md"
           render={
             <Link
-              href="https://bsky.app/profile/okovaliukk.bsky.social"
               target="_blank"
+              aria-label="Check out my Bluesky"
+              href="https://bsky.app/profile/okovaliukk.bsky.social"
             >
               check out my bluesky
               <ArrowUpRight className="size-2 transition-transform duration-100 ease-linear group-hover/button:translate-x-0.25 group-hover/button:-translate-y-0.25" />
@@ -132,8 +137,9 @@ export default function Page() {
           nativeButton={false}
           render={
             <Link
-              href="https://www.linkedin.com/in/oleksandrkovaliuk/"
               target="_blank"
+              aria-label="Connect with me on LinkedIn"
+              href="https://www.linkedin.com/in/oleksandrkovaliuk/"
             >
               connect with me on linkedIn
               <ArrowUpRight className="size-2 transition-transform duration-100 ease-linear group-hover/button:translate-x-0.25 group-hover/button:-translate-y-0.25" />
@@ -147,7 +153,11 @@ export default function Page() {
           nativeButton={false}
           className="text-md"
           render={
-            <Link href="https://github.com/oleksandrkovaliuk" target="_blank">
+            <Link
+              target="_blank"
+              aria-label="See my work on GitHub"
+              href="https://github.com/oleksandrkovaliuk"
+            >
               see my work on github
               <ArrowUpRight className="size-2 transition-transform duration-100 ease-linear group-hover/button:translate-x-0.25 group-hover/button:-translate-y-0.25" />
             </Link>
@@ -232,7 +242,11 @@ export default function Page() {
                 nativeButton={false}
                 className="text-md"
                 render={
-                  <Link href={person.link} target="_blank">
+                  <Link
+                    target="_blank"
+                    href={person.link}
+                    aria-label={`Visit ${person.name}'s website`}
+                  >
                     {person.name}
                     <ArrowUpRight className="size-2 transition-transform duration-100 ease-linear group-hover/button:translate-x-0.25 group-hover/button:-translate-y-0.25" />
                   </Link>

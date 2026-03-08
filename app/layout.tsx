@@ -46,16 +46,16 @@ export default function RootLayout({
               <Smile className="size-10" />
 
               <Button
-                size="icon-lg"
-                variant="secondary"
+                size="auto"
+                variant="clean"
                 nativeButton={false}
                 render={
                   <Link
-                    href="https://docs.google.com/document/d/1lSxGmmAbTFf0WhDlkPbs-R42bwhjz9WC0cXrivOu2u4/edit?tab=t.0"
                     target="_blank"
                     className="font-medium"
+                    href="https://docs.google.com/document/d/1lSxGmmAbTFf0WhDlkPbs-R42bwhjz9WC0cXrivOu2u4/edit?tab=t.0"
                   >
-                    <Document className="size-4.5" />
+                    <Document className="size-7.5" data-slot="document" />
                   </Link>
                 }
               />
