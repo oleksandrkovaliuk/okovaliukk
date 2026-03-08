@@ -51,7 +51,9 @@ function Button({
   size = "default",
   ...props
 }: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
-  const { trigger } = useWebHaptics({ debug: true });
+  const { trigger } = useWebHaptics({
+    debug: typeof window !== "undefined" ? !("ontouchstart" in window) : true,
+  });
 
   return (
     <ButtonPrimitive

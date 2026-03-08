@@ -124,3 +124,53 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer smile {
+  [data-slot="smile"] [data-slot="eye"] {
+    transform: var(--eye-transform);
+    transform-origin: center;
+    transition: transform 0.1s linear;
+    transform-box: fill-box;
+    animation: blink 5s infinite linear;
+    animation-delay: 2s;
+    animation-fill-mode: backwards;
+  }
+
+  @keyframes blink {
+    0% {
+      transform: var(--eye-transform);
+    }
+    2% {
+      transform: var(--eye-transform) scaleY(0);
+    }
+    10% {
+      transform: var(--eye-transform);
+    }
+    100% {
+      transform: var(--eye-transform);
+    }
+  }
+}
+
+@layer click {
+  [data-slot="click"] {
+    transform-origin: right bottom;
+    animation: click 5s infinite;
+    animation-delay: 5s;
+  }
+
+  @keyframes click {
+    0% {
+      transform: scale(1);
+    }
+    2% {
+      transform: scale(0.9);
+    }
+    10% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
