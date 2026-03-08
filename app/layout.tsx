@@ -9,6 +9,7 @@ import { Copyright } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
+import { CVTypography } from "~/components/icons/cv-typography";
 import { Document } from "~/components/icons/document";
 import { Sitemap } from "~/components/icons/sitemap";
 import { Smile } from "~/components/smile";
@@ -93,8 +94,8 @@ export default async function RootLayout({
               <Smile defaultAcknowledged={acknowledged} className="size-10" />
 
               <Button
-                size="auto"
-                variant="clean"
+                size="icon-lg"
+                variant="ghost"
                 nativeButton={false}
                 render={
                   <Link
@@ -104,7 +105,7 @@ export default async function RootLayout({
                   >
                     <span className="sr-only">View my resume</span>
 
-                    <Document className="size-7.5" />
+                    <CVTypography />
                   </Link>
                 }
               />

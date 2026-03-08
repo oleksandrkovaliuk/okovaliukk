@@ -44,12 +44,12 @@ export const workExperience = [
     ),
   },
   {
-    title: "renzo",
+    title: "inox",
     role: "2024 - '25, front-end engineer",
     summary: (
       <React.Fragment>
         <p>
-          At Renzo, I led a two-person frontend team and partnered closely with
+          At Inox, I led a two-person frontend team and partnered closely with
           design on a global product redesign, while modernizing a legacy
           real-estate platform.
         </p>
