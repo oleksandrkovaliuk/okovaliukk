@@ -55,7 +55,9 @@ export default function RootLayout({
                     className="font-medium"
                     href="https://docs.google.com/document/d/1lSxGmmAbTFf0WhDlkPbs-R42bwhjz9WC0cXrivOu2u4/edit?tab=t.0"
                   >
-                    <Document className="size-7.5" data-slot="document" />
+                    <span className="sr-only">View my resume</span>
+
+                    <Document className="size-7.5" />
                   </Link>
                 }
               />

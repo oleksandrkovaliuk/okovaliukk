@@ -34,8 +34,6 @@ export function Smile(props: React.ComponentProps<"svg">) {
     y: 0,
   });
 
-  const [debug, setDebug] = React.useState<string>("");
-
   const isTouchScreen =
     typeof window !== "undefined" && "ontouchstart" in window;
 
@@ -83,53 +81,50 @@ export function Smile(props: React.ComponentProps<"svg">) {
       React.startTransition(() => {
         setEyeTransform({ x: boundedX, y: boundedY });
       });
-
-      setDebug(`x: ${x}, y: ${y}`);
     }
 
-    if (!isTouchScreen) {
-      document.addEventListener("mousemove", onMouseMove, {
+    if (isTouchScreen) {
+      window.addEventListener("deviceorientation", onDeviceOrientationChange, {
         passive: true,
         signal: abortController.signal,
       });
 
+      if (
+        typeof (
+          DeviceOrientationEvent as unknown as {
+            requestPermission?: () => Promise<string>;
+          }
+        ).requestPermission === "function"
+      ) {
+        const btn = smileContainerRef.current;
+        if (btn) {
+          const requestOnClick = () => {
+            (
+              DeviceOrientationEvent as unknown as {
+                requestPermission: () => Promise<string>;
+              }
+            )
+              .requestPermission()
+              .then((state) => {
+                if (state !== "granted") {
+                  window.removeEventListener(
+                    "deviceorientation",
+                    onDeviceOrientationChange
+                  );
+                }
+              });
+            btn.removeEventListener("click", requestOnClick);
+          };
+          btn.addEventListener("click", requestOnClick, { once: true });
+        }
+      }
       return;
     }
 
-    window.addEventListener("deviceorientation", onDeviceOrientationChange, {
+    document.addEventListener("mousemove", onMouseMove, {
       passive: true,
       signal: abortController.signal,
     });
-
-    if (
-      typeof (
-        DeviceOrientationEvent as unknown as {
-          requestPermission?: () => Promise<string>;
-        }
-      ).requestPermission === "function"
-    ) {
-      const btn = smileContainerRef.current;
-      if (btn) {
-        const requestOnClick = () => {
-          (
-            DeviceOrientationEvent as unknown as {
-              requestPermission: () => Promise<string>;
-            }
-          )
-            .requestPermission()
-            .then((state) => {
-              if (state !== "granted") {
-                window.removeEventListener(
-                  "deviceorientation",
-                  onDeviceOrientationChange
-                );
-              }
-            });
-          btn.removeEventListener("click", requestOnClick);
-        };
-        btn.addEventListener("click", requestOnClick, { once: true });
-      }
-    }
 
     return () => abortController.abort();
   }, [isTouchScreen]);
@@ -155,7 +150,6 @@ export function Smile(props: React.ComponentProps<"svg">) {
         } as React.CSSProperties
       }
     >
-      <span>{debug}</span>
       <span className="sr-only">{mood} smile, navigate to the home page</span>
       <AnimatePresence mode="wait">
         {mood === "default" && (
