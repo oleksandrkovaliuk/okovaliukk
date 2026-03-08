@@ -44,12 +44,18 @@ export function Smile({
     typeof window !== "undefined" && "ontouchstart" in window;
 
   async function requestOrientationPermission() {
-    return (
+    const requestPermission = (
       DeviceOrientationEvent as unknown as {
         requestPermission: () => Promise<string>;
       }
-    )
-      ?.requestPermission()
+    )?.requestPermission;
+
+    if (typeof requestPermission !== "function") {
+      // Android / non-iOS — no permission needed, events fire freely
+      return;
+    }
+
+    return requestPermission()
       .then((state) => {
         if (state !== "granted") {
           abortControllerRef.current?.abort();

@@ -129,8 +129,9 @@
   [data-slot="smile"] [data-slot="eye"] {
     transform: var(--eye-transform);
     transform-origin: center;
+    transition: transform 0.15s linear;
     transform-box: fill-box;
-    animation: blink 5s infinite;
+    animation: blink 5s infinite linear;
     animation-delay: 2s;
     animation-fill-mode: backwards;
   }
