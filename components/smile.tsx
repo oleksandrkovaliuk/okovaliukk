@@ -74,9 +74,6 @@ export function Smile({
       return nextMood;
     });
 
-    setAcknowledged(true);
-    document.cookie = "acknowledged=true; path=/; max-age=604800";
-
     if (isTouchScreen) {
       await requestOrientationPermission();
     }
@@ -138,7 +135,11 @@ export function Smile({
       size="auto"
       variant="clean"
       data-slot="smile"
-      onClick={moodChange}
+      onClick={() => {
+        moodChange();
+        setAcknowledged(true);
+        document.cookie = "acknowledged=true; path=/; max-age=604800";
+      }}
       ref={smileContainerRef}
       className="relative size-11"
       onMouseEnter={() => {
