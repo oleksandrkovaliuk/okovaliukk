@@ -109,14 +109,10 @@ export function Smile(props: React.ComponentProps<"svg">) {
       setDebug(`x: ${x}, y: ${y}`);
     }
 
-    if (isTouchScreen) {
-      document.addEventListener("mousemove", onMouseMove, {
-        passive: true,
-        signal: abortController.signal,
-      });
-
-      return;
-    }
+    document.addEventListener("mousemove", onMouseMove, {
+      passive: true,
+      signal: abortController.signal,
+    });
 
     window.addEventListener("deviceorientation", onDeviceOrientationChange, {
       passive: true,
