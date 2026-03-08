@@ -3,6 +3,8 @@ import { Geist, Geist_Mono, Nunito_Sans } from "next/font/google";
 
 import "./globals.css";
 
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import Link from "next/link";
 
 import { Document } from "~/components/icons/document";
@@ -58,6 +60,9 @@ export default function RootLayout({
                 }
               />
             </header>
+
+            <Analytics />
+            <SpeedInsights />
             {children}
           </div>
         </main>

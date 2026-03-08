@@ -219,7 +219,7 @@ export default function Page() {
           <InspirationTypography className="h-9.5" />
         </h2>
 
-        <p className="text-muted-foreground text-sm">
+        <p className="text-muted-foreground mb-6 text-sm">
           People in tech who inspire me.
         </p>
 

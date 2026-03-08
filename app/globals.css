@@ -124,3 +124,28 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer smile {
+  [data-slot="smile"] [data-slot="eye"] {
+    transform: var(--eye-transform);
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: blink 5s infinite;
+    animation-delay: 2s;
+  }
+
+  @keyframes blink {
+    0% {
+      transform: var(--eye-transform);
+    }
+    2% {
+      transform: var(--eye-transform) scaleY(0);
+    }
+    10% {
+      transform: var(--eye-transform);
+    }
+    100% {
+      transform: var(--eye-transform);
+    }
+  }
+}

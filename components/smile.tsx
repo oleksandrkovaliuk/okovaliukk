@@ -6,10 +6,17 @@ import * as React from "react";
 import { AngrySmile } from "./icons/angry-smile";
 import { DefaultSmile } from "./icons/default-smile";
 import { HappySmile } from "./icons/happy-smile";
+import { QuestioningSmile } from "./icons/questioning-smile";
 import { SuprisedSmile } from "./icons/suprised-smile";
 import { Button } from "./ui/button";
 
-const moods = ["default", "happy", "angry", "surprised"] as const;
+const moods = [
+  "default",
+  "questioning",
+  "happy",
+  "angry",
+  "surprised",
+] as const;
 
 type Mood = (typeof moods)[number];
 type EyeTransform = {
@@ -27,6 +34,9 @@ export function Smile(props: React.ComponentProps<"svg">) {
     y: 0,
   });
 
+  const isTouchScreen =
+    typeof window !== "undefined" && "ontouchstart" in window;
+
   function moodChange() {
     setMood((prev) => {
       const filteredMoods = moods.findIndex((m) => m === prev);
@@ -37,6 +47,8 @@ export function Smile(props: React.ComponentProps<"svg">) {
   }
 
   React.useEffect(() => {
+    const abortController = new AbortController();
+
     function onMouseMove(event: MouseEvent) {
       const smileContainer = smileContainerRef.current;
       if (!smileContainer) return;
@@ -55,21 +67,49 @@ export function Smile(props: React.ComponentProps<"svg">) {
       });
     }
 
-    document.addEventListener("mousemove", onMouseMove);
+    function onDeviceOrientationChange(event: DeviceOrientationEvent) {
+      const { alpha, beta } = event;
 
-    return () => {
-      document.removeEventListener("mousemove", onMouseMove);
-    };
+      if (alpha == null || beta == null) return;
+
+      const x = (alpha / 360 - 0.5) * 2 * 0.5;
+      const y = (beta / 180) * 0.6;
+
+      const boundedX = Math.max(-0.5, Math.min(0.5, x));
+      const boundedY = Math.max(-0.5, Math.min(0.7, y));
+
+      React.startTransition(() => {
+        setEyeTransform({ x: boundedX, y: boundedY });
+      });
+    }
+
+    document.addEventListener("mousemove", onMouseMove, {
+      passive: true,
+      signal: abortController.signal,
+    });
+    window.addEventListener("deviceorientation", onDeviceOrientationChange, {
+      passive: true,
+      signal: abortController.signal,
+    });
+
+    return () => abortController.abort();
   }, [mood]);
 
   return (
     <Button
       size="auto"
       variant="clean"
+      data-slot="smile"
       onClick={moodChange}
       ref={smileContainerRef}
-      onMouseEnter={moodChange}
       className="size-11 [contain:strict]"
+      onMouseEnter={() => {
+        if (!isTouchScreen) {
+          return;
+        }
+
+        moodChange();
+      }}
       style={
         {
           "--eye-transform": `translate(${eyeTransform.x}px, ${eyeTransform.y}px)`,
@@ -135,6 +175,21 @@ export function Smile(props: React.ComponentProps<"svg">) {
             className="inline-flex"
           >
             <SuprisedSmile {...props} />
+          </motion.span>
+        )}
+
+        {mood === "questioning" && (
+          <motion.span
+            key={mood}
+            {...{
+              initial: { scale: 0.95 },
+              exit: { scale: 0.95 },
+              animate: { scale: 1 },
+              transition: { duration: 0.1, ease: "easeOut" },
+            }}
+            className="inline-flex"
+          >
+            <QuestioningSmile {...props} />
           </motion.span>
         )}
       </AnimatePresence>
