@@ -115,21 +115,24 @@ export default async function RootLayout({
             {children}
 
             <footer>
-              <Button
-                size="auto"
-                variant="link"
-                nativeButton={false}
-                className="text-md"
-                render={
-                  <Link
-                    href="mailto:okovaliukk@proton.me"
-                    aria-label="Email me"
-                    target="_blank"
-                  >
-                    okovaliukk@proton.me
-                  </Link>
-                }
-              />
+              <span className="text-muted-foreground inline-flex items-center gap-1 text-sm">
+                <Button
+                  size="auto"
+                  variant="link"
+                  nativeButton={false}
+                  className="text-md"
+                  render={
+                    <Link
+                      href="mailto:okovaliukk@proton.me"
+                      aria-label="Email me"
+                      target="_blank"
+                    >
+                      okovaliukk@proton.me
+                    </Link>
+                  }
+                />
+                thanks, bye
+              </span>
 
               <Separator className="mt-1 mb-2" />
 
