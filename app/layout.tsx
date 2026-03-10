@@ -10,7 +10,6 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 
 import { CVTypography } from "~/components/icons/cv-typography";
-import { Document } from "~/components/icons/document";
 import { Sitemap } from "~/components/icons/sitemap";
 import { Smile } from "~/components/smile";
 import { Button } from "~/components/ui/button";
@@ -86,7 +85,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} relative flex h-svh flex-col overflow-hidden antialiased`}
       >
-        <span className="from-background pointer-events-none absolute right-0 bottom-0 left-0 h-20 bg-linear-to-t to-transparent" />
+        <span className="from-background pointer-events-none absolute right-0 bottom-0 left-0 h-20 bg-gradient-to-t to-transparent" />
 
         <main className="after:from-background flex h-full flex-1 flex-col overflow-y-auto">
           <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-6 py-12 sm:py-24">

@@ -64,7 +64,7 @@ export default function Page() {
           right.
         </p>
         <p className="mb-2">
-          Since high school, i have spent years building software, learning and
+          Since high school, I have spent years building software, learning and
           growing. You can get more details about my background through{" "}
           <Button
             size="auto"
@@ -204,7 +204,7 @@ export default function Page() {
                   </DialogToDrawerHeader>
 
                   <div className="pb-6">
-                    <ScrollArea className="after:from-background before:from-background max-h-[60vh] space-y-2 px-6 text-base/relaxed text-pretty before:bg-linear-to-b before:to-transparent after:bg-linear-to-t after:to-transparent">
+                    <ScrollArea className="after:from-background before:from-background max-h-[60vh] space-y-2 px-6 text-base/relaxed text-pretty before:bg-gradient-to-b before:to-transparent after:bg-gradient-to-t after:to-transparent">
                       {work.summary}
                     </ScrollArea>
                   </div>
