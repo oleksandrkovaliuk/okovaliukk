@@ -10,7 +10,6 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 
 import { CVTypography } from "~/components/icons/cv-typography";
-import { Document } from "~/components/icons/document";
 import { Sitemap } from "~/components/icons/sitemap";
 import { Smile } from "~/components/smile";
 import { Button } from "~/components/ui/button";
@@ -101,7 +100,7 @@ export default async function RootLayout({
                   <Link
                     target="_blank"
                     className="font-medium"
-                    href="https://docs.google.com/document/d/16Y9rpyhHnK78Abioa9FBQzfh4kiG697ki0gusEVHgv4/edit?usp=sharing"
+                    href="https://docs.google.com/document/d/1mxYAqWySsLndii87h5KPMjhbZf0X4QzyZXKvA5qu5K4/edit?usp=sharing"
                   >
                     <span className="sr-only">View my resume</span>
 
