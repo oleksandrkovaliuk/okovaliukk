@@ -25,7 +25,7 @@ export const workExperience = [
         <p>
           Furthermore, we restructured the API layer around TanStack Query key
           factories and query options, migrated from Axios to Ky to fully rely
-          on browser netive fetch rather then XMLHttpRequest wrapper, made the
+          on browser native fetch rather than XMLHttpRequest wrapper, made the
           socket layer type-safe from the UI perspective, aligned the codebase
           with stricter TypeScript and linting rules, establish a proper design
           system using Base UI, Tailwind v4, and primitives component
@@ -35,7 +35,7 @@ export const workExperience = [
         <p>
           The result was a faster, more maintainable product: cut CI/CD times in
           half, reduced bundle size , improved sprint delivery by roughly 30/40%
-          (based on past sprint comparisons), enchance INP perfomance across
+          (based on past sprint comparisons), enhance INP performance across
           content heavy pages. We also improved observability and AI-assisted
           workflows by setting up richer Sentry config and automating parts of
           the release process.
