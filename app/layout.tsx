@@ -113,6 +113,7 @@ export default async function RootLayout({
             <Analytics />
             <SpeedInsights />
             {children}
+            <script src="https://inflight.co/widget.js" data-org="kx7rt7is" async></script>
 
             <footer>
               <span className="text-muted-foreground inline-flex items-center gap-1 text-sm">
